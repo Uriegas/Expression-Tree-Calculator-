@@ -74,3 +74,6 @@ De igual manera se deberá tener lo siguiente:
   1. Código de la implementación documentado mediante JavaDoc.
   2. Se deberá generar el archivo Jar => **Se subirá a plataforma google classroom**
   3. Se deberá generar un reporte de actividades en formato PDF => **Se subirá a plataforma google classroom**
+
+### Reporte:
+[Overleaf](https://www.overleaf.com/read/nhmkggjbfzmp)

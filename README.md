@@ -13,7 +13,7 @@ El alumno deberá demostrar solura en los siguientes temas de la Programación O
 
 ### Descripción de la práctica.
 
-Se necesita la implementación de una calculadora científica que permita la intrudicción de ecuaciones en notación infija y que calcule el resultado de acuerdo a el análisis de la ecuación introducida. A continuación se denotan algunos ejemplos:
+Se necesita la implementación de una calculadora científica que permita la introducción de ecuaciones en notación infija y que calcule el resultado de acuerdo al análisis de la ecuación introducida. A continuación se denotan algunos ejemplos:
 
 Ejemplo 1
 ```
@@ -24,21 +24,21 @@ $ Resultado: 6
 Ejemplo 2
 ```
 $ 3x + 2
-$ Introdusca el valor de x: 5
+$ Introduzca el valor de x: 5
 $ Resultado: 17
 ```
 
 Ejemplo 3
 ```
 $ 3x + sen(2x) - x^2 + sqrt(4)
-$ Introdusca el valor de x: 3
+$ Introduzca el valor de x: 3
 $ Resultado: 4.1045
 ```
 
 Ejemplo 4
 ```
 $ 2x + 5+-4
-$ Introdusca el valor de x: 2
+$ Introduzca el valor de x: 2
 $ Resultado: 5
 ```
 

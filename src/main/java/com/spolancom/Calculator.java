@@ -9,7 +9,26 @@ package com.spolancom;
  */
 public class Calculator{
     /**
-     * Result of every operation
+     * User input
      */
-    public int i;
+    private String in;
+    /**
+     * Expression Tree to store the user input abstractely
+     * It is useful for making notation convertions and evaluation
+     */
+    private ExpressionTree<Integer> tree = new ExpressionTree<Integer>();
+
+    public Calculator(){
+        in = null;
+        tree = null;
+    }
+
+    /**
+     * Just runs the calculator
+     * @return Exit state
+     */
+    public int run(){
+        System.out.println("Scientific Calculator");
+        return 0;
+    }
 }

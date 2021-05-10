@@ -11,6 +11,7 @@ public class Operand extends Token {
     public Operand(Operand_Type i, double j){
         type = i;
         data = Double.valueOf(j);
+        op_type = false;
     }
     public Operand(Operand_Type i, float j){
         type = i;
@@ -19,5 +20,9 @@ public class Operand extends Token {
     public Operand(Operand_Type i, int j){
         type = i;
         data = Double.valueOf(j);
+    }
+    public Operand(Operand_Type i){
+        type = i;
+        data = null;
     }
 }

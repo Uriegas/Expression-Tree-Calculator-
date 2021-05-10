@@ -9,6 +9,7 @@ public class Operator extends Token {
 
     public Operator(Operator_Type i){
         type = i;
+        op_type = true;
     }
     public int precedence(){
         if(this.type == Operator_Type.ADD || this.type == Operator_Type.SUB)
@@ -17,5 +18,16 @@ public class Operator extends Token {
             return 2;
         else //Unary operators
             return 1;
+    }
+    public boolean isFunction(){
+        try{
+            if(this.type == Operator_Type.POW || this.type == Operator_Type.SQRT ||
+            this.type == Operator_Type.SIN || this.type == Operator_Type.COS ||
+            this.type == Operator_Type.TAN)
+                return true;
+            else
+                return false;
+        }
+        catch(Error e){return false;}
     }
 }

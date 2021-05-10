@@ -1,5 +1,7 @@
 package com.spolancom;
-
+/**
+ * Stores numbers or operators
+ */
 public class Terms {
     /**
      * Number or result of operation

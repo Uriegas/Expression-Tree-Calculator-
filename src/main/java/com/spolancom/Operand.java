@@ -7,7 +7,17 @@ enum Operand_Type{NUMBER, VARIABLE}
  */
 public class Operand extends Token {
     private Operand_Type type;
-    public Operand(Operand_Type i){
+    private Double data;
+    public Operand(Operand_Type i, double j){
         type = i;
+        data = Double.valueOf(j);
+    }
+    public Operand(Operand_Type i, float j){
+        type = i;
+        data = Double.valueOf(j);
+    }
+    public Operand(Operand_Type i, int j){
+        type = i;
+        data = Double.valueOf(j);
     }
 }

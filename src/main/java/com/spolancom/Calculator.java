@@ -20,7 +20,7 @@ public class Calculator{
      * Expression Tree to store the user input abstractely
      * It is useful for making notation convertions and evaluation
      */
-    private ExpressionTree<Terms> tree = new ExpressionTree<Terms>();
+    private ExpressionTree<Token> tree = new ExpressionTree<Token>();
     private Float result;
 
     public Calculator(){
@@ -72,6 +72,7 @@ public class Calculator{
      * Note: Doenst support syntax error detection yet
      */
     public Stack<Token> toRPN(ArrayList<Token> input){
+        
         Stack<Token> operators = new Stack<>();
         Stack<Token> output = new Stack<>();
         for(int i = 0; i < input.size(); i++){//Iterate over tokens input
@@ -94,6 +95,21 @@ public class Calculator{
         while(!operators.isEmpty())//While the stack has operator push them to the output
             output.push(operators.pop());
         return output;
+    }
+
+    public ArrayList<Token> instantiateVariables(ArrayList<Token> t, Scanner s){
+        for(int i = 0; i < t.size(); i++){
+            if(t.get(i).getType() == Token_Type.VARIABLE){
+                System.out.print("Introduzca el valor de : ");
+                Token tmp = new Token(s.nextLine());
+                for(int j = i; j < t.size(); j++){
+                    if(t.get(j).equals(tmp))
+                        t.set(j, tmp);
+                }
+                break;//Remove break and we can implement multiple variables(ex. x, y, z)
+            } 
+        }
+        return t;
     }
 
     /**

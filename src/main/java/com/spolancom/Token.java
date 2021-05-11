@@ -55,6 +55,23 @@ public class Token {
         else //Unary operators
             return 0;
     }
+
+    public boolean leftAssociative(){
+        if( type == Token_Type.ADD || type == Token_Type.SUB ||
+            type == Token_Type.MUL || type == Token_Type.DIV )
+            return true;
+        else
+            return false;
+    }
+    public boolean rigthAssociative(){
+        return !this.leftAssociative();
+    }
+    public boolean equals(Token t){
+        if(this.type == t.type && this.value == t.value)
+            return true;
+        else
+            return false;
+    }
     public String toString(){
         return value.toString();
     }

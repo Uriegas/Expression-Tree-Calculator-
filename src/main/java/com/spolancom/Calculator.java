@@ -130,6 +130,39 @@ public class Calculator{
     }
 
     /**
+     * toRPN function
+     * Converts an array of tokens to a stack in Reverse Polish Notation
+     * This implements the Shunting Yard algorithm
+     * @param ArrayList<Token> array of tokens
+     * @return Stack<Token> RPN
+     * Note: Doenst support syntax error detection yet
+     */
+    public Stack<Token> toRPN(ArrayList<Token> input){
+        Stack<Token> operators = new Stack<>();
+        Stack<Token> output = new Stack<>();
+        for(int i = 0; i < input.size(); i++){//Iterate over tokens input
+            if(input.get(i).op_type == false)//If it is a number
+                output.push(input.get(i));
+            else if(input.get(i).getType() == Type.LEFT)//If '('
+                operators.push(input.get(i));
+            else if(input.get(i).getType() == Type.RIGTH){//If ')'
+                while(operators.peek() != Type.LEFT)
+                    output.push(operators.pop());
+                operators.pop();
+            }
+            else if(input.get(i).isOperand()){//If is an operand
+                while( (output.peek().op_type == true) && 
+                (operators.peek().precedence() >= input.get(i).precedence() ) )//Check precedence
+                    output.push(operators.pop());
+                operators.push(input.get(i));
+            }
+        }
+        while(!operators.isEmpty())//While the stack has operator push them to the output
+            output.push(operators.pop());
+        return output;
+    }
+
+    /**
      * Just runs the calculator
      * @return Exit state
      */

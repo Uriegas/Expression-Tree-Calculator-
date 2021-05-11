@@ -1,5 +1,8 @@
 package com.spolancom;
+
+import java.io.*;
 import java.util.*;
+
 /**
  * <h1>Calculator<h1/>
  * A scientific calculator from terminal
@@ -50,12 +53,13 @@ public class Calculator{
      * Tokenizer
      * Converts string to an array of tokens
      */
+    /*
     public ArrayList<Token> Tokenizer(String s){
         ArrayList<Token> tokens = new ArrayList<>();
-        String number = "";
+        String number = "";*/
         /**
          * Replace functions names for char
-         */
+         *//*
         s = s.toLowerCase();
         s = s.replaceAll(" ","");
         s = s.replaceAll("pow", "^");
@@ -63,10 +67,10 @@ public class Calculator{
         s = s.replaceAll("cos", "@");
         s = s.replaceAll("tan", "#");
         s = s.replaceAll("sqrt", "$");
-
+*/
         /**
          * Algorithm
-         */
+         *//*
         boolean func_par_flag = false;
 
         for( int i = 0; i < s.length(); i++ ){
@@ -127,8 +131,35 @@ public class Calculator{
         }
         
         return tokens;
-    }
+    }*/
 
+    /**
+     * Tokenizer
+     * @param s
+     * @return Array of tokens
+     */
+    public ArrayList<Token> Tokenizer(String s) throws IOException{
+        s = s.toLowerCase();
+        s = s.replaceAll(" ","");
+        StreamTokenizer tk = new StreamTokenizer(new StringReader(s));
+        tk.ordinaryChar('-');
+        tk.ordinaryChar('/');
+        ArrayList<Token> out = new ArrayList<Token>();
+
+        while (tk.nextToken() != StreamTokenizer.TT_EOF) {
+            switch(tk.ttype) {
+                case StreamTokenizer.TT_NUMBER:
+                    out.add( new Token(Double.valueOf(tk.nval)) );
+                    break;
+                case StreamTokenizer.TT_WORD:
+                    out.add(new Token(tk.sval) );
+                    break;
+                default:  // operator
+                    out.add( new Token(String.valueOf((char) tk.ttype)) );
+            }
+        }
+        return out; 
+    }
     /**
      * toRPN function
      * Converts an array of tokens to a stack in Reverse Polish Notation
@@ -160,6 +191,15 @@ public class Calculator{
         while(!operators.isEmpty())//While the stack has operator push them to the output
             output.push(operators.pop());
         return output;
+    }
+
+    /**
+     * Function to convert an RPN stack onto an expression tree
+     * @param in
+     * @return ExpressionTree
+     */
+    public ExpressionTree<Token> toTree(Stack<Token> RPN){
+        
     }
 
     /**

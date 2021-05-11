@@ -1,17 +1,16 @@
 package com.spolancom;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
-enum Pos {
-    LEFT, RIGHT
-}
 
 /**
  * Expression Tree
  * 
  */
 public class ExpressionTree<T> {
+    enum Pos {
+        LEFT, RIGHT
+    }
     private Node<T> root;
 
     public ExpressionTree() {

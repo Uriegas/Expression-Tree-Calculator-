@@ -45,6 +45,25 @@ public class Token {
 
     public Token_Type getType(){return type;}
 
+    public boolean isOperand(){
+        if( this.type == Token_Type.NUMBER ||
+            this.type == Token_Type.VARIABLE )
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isOperator(){
+        if( this.type == Token_Type.ADD || this.type == Token_Type.SUB ||
+            this.type == Token_Type.MUL || this.type == Token_Type.DIV ||
+            this.type == Token_Type.POW || this.type == Token_Type.SIN ||
+            this.type == Token_Type.COS || this.type == Token_Type.TAN )
+            return true;
+        else
+            return false;
+    }
+
+
     public int precedence(){
         if(type == Token_Type.MUL || type == Token_Type.DIV)
             return 3;
@@ -58,7 +77,7 @@ public class Token {
 
     public boolean leftAssociative(){
         if( type == Token_Type.ADD || type == Token_Type.SUB ||
-            type == Token_Type.MUL || type == Token_Type.DIV )
+            type == Token_Type.MUL )
             return true;
         else
             return false;

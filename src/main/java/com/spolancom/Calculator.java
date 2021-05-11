@@ -70,25 +70,32 @@ public class Calculator{
      * @param ArrayList<Token> array of tokens
      * @return Stack<Token> RPN
      * Note: Doenst support syntax error detection yet
+     * Note: Minus operator could be unary and binary
+     * Note: Need to implement a function that inputs an element to an array
+     * and pushes the rest of the elements to the rigth.
+     * This for the implicit multiplication and unary substraction
      */
     public Stack<Token> toRPN(ArrayList<Token> input){
-        
-        Stack<Token> operators = new Stack<>();
-        Stack<Token> output = new Stack<>();
+        Stack<Token> operators = new Stack<Token>();
+        Stack<Token> output = new Stack<Token>();
+
         for(int i = 0; i < input.size(); i++){//Iterate over tokens input
-            if(input.get(i).op_type == false)//If it is a number
+            if(input.get(i).isOperand())//If it is a number
                 output.push(input.get(i));
-            else if(input.get(i).getType() == Type.LEFT)//If '('
+            else if(input.get(i).getType() == Token_Type.ASSOCIATIVE_LEFT )//If '('
                 operators.push(input.get(i));
-            else if(input.get(i).getType() == Type.RIGTH){//If ')'
-                while(operators.peek() != Type.LEFT)
+            else if(input.get(i).getType() == Token_Type.ASSOCIATIVE_RIGTH ){//If ')'
+                while(operators.peek().getType() != Token_Type.ASSOCIATIVE_LEFT)
                     output.push(operators.pop());
                 operators.pop();
             }
-            else if(input.get(i).isOperand()){//If is an operand
-                while( (output.peek().op_type == true) && 
-                (operators.peek().precedence() >= input.get(i).precedence() ) )//Check precedence
-                    output.push(operators.pop());
+            else if(input.get(i).isOperator()){//If it is an operator
+                if(input.get(i).leftAssociative())
+                    while( !operators.isEmpty() && operators.peek().precedence() >= input.get(i).precedence() )
+                        output.push(operators.pop());
+                else if(input.get(i).rigthAssociative())
+                    while( !operators.isEmpty() && operators.peek().precedence() > input.get(i).precedence() )
+                        output.push(operators.pop());
                 operators.push(input.get(i));
             }
         }
@@ -97,11 +104,17 @@ public class Calculator{
         return output;
     }
 
+    /**
+     * Defines variables into numbers(double)
+     * @param t
+     * @param s
+     * @return Array with instantiated variables
+     */
     public ArrayList<Token> instantiateVariables(ArrayList<Token> t, Scanner s){
         for(int i = 0; i < t.size(); i++){
             if(t.get(i).getType() == Token_Type.VARIABLE){
                 System.out.print("Introduzca el valor de : ");
-                Token tmp = new Token(s.nextLine());
+                Token tmp = new Token(s.nextDouble());
                 for(int j = i; j < t.size(); j++){
                     if(t.get(j).equals(tmp))
                         t.set(j, tmp);

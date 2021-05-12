@@ -9,11 +9,11 @@ enum Token_Type{
 
 public class Token {
     private Token_Type type;
-    private Object value;
+    private String value;
 
     public Token(Double v){
         type = Token_Type.NUMBER;
-        value = v;
+        value = v.toString();
     }
 
     public Token(String v){
@@ -36,9 +36,9 @@ public class Token {
             default: type = Token_Type.UNDEFINED; break;
         }
     }
-    public Object getNumber(){
+    public Double getNumber(){
         if(type == Token_Type.NUMBER)
-            return value;
+            return Double.valueOf(value.toString());
         else
             return null;
     }
@@ -63,6 +63,22 @@ public class Token {
             return false;
     }
 
+    public boolean isBinary(){
+        if( this.type == Token_Type.ADD || this.type == Token_Type.SUB ||
+            this.type == Token_Type.MUL || this.type == Token_Type.DIV ||
+            this.type == Token_Type.POW)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean isUnary(){
+        if( this.type == Token_Type.SIN ||
+            this.type == Token_Type.COS || this.type == Token_Type.TAN )
+            return true;
+        else
+            return false;
+    }
 
     public int precedence(){
         if(type == Token_Type.MUL || type == Token_Type.DIV)

@@ -21,11 +21,12 @@ public class ExpressionTree<T> {
         root = new Node<T>(init_val);
     }
 
-    public void Add(Node<T> p, Node<T> c, Pos pos) {
-        if (pos == Pos.LEFT)
-            p.setLeft(c);
-        else
-            p.setRight(c);
+    public Node<T> Add(Node<T> n) {
+        if (n == null)
+            root = n;
+        else{
+            
+        }
     }
 
     /**

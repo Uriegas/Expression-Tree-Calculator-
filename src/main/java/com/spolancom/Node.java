@@ -17,4 +17,10 @@ public class Node<T>{
     public T getInfo(){return this.info;}
     public void setRight(Node<T> n){this.right = n;}
     public void setLeft(Node<T> n){this.left = n;}
+    public Node<T> visitLeft(){
+        return left;
+    }
+    public Node<T> visitRigth(){
+        return right;
+    }
 }

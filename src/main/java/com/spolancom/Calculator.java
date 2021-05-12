@@ -21,7 +21,7 @@ public class Calculator{
      * It is useful for making notation convertions and evaluation
      */
     private ExpressionTree<Token> tree = new ExpressionTree<Token>();
-    private Float result;
+    private Token result;
 
     public Calculator(){
         in = null;
@@ -29,12 +29,21 @@ public class Calculator{
         result = null;
     }
 
-
-    public Float compute(){
-        return result;
+    public Token evaluate(Token a, Token b, Token operation){
+        switch (operation.getType()) {
+            case ADD: return new Token( a.getNumber() + b.getNumber() );
+            case SUB: return new Token( a.getNumber() - b.getNumber() );
+            case MUL: return new Token( a.getNumber() * b.getNumber() );
+            case DIV: return new Token( a.getNumber() / b.getNumber() );
+            case POW: return new Token( Math.pow(a.getNumber(), b.getNumber()) );
+            case SQRT: return new Token( Math.sqrt(a.getNumber()) );
+            case SIN: return new Token( Math.sin(a.getNumber()) );
+            case COS: return new Token( Math.cos(a.getNumber()) );
+            case TAN: return new Token( Math.tan(a.getNumber()) );
+            default: return new Token("ERROR"); //Return token error
+        }
     }
-
-    
+    public Token compute(){return result;}
     /**
      * Tokenizer
      * @param s
@@ -75,32 +84,32 @@ public class Calculator{
      * and pushes the rest of the elements to the rigth.
      * This for the implicit multiplication and unary substraction
      */
-    public Stack<Token> toRPN(ArrayList<Token> input){
+    public Queue<Token> toRPN(ArrayList<Token> input){
         Stack<Token> operators = new Stack<Token>();
-        Stack<Token> output = new Stack<Token>();
+        Queue<Token> output = new LinkedList<Token>();
 
         for(int i = 0; i < input.size(); i++){//Iterate over tokens input
             if(input.get(i).isOperand())//If it is a number
-                output.push(input.get(i));
+                output.add(input.get(i));
             else if(input.get(i).getType() == Token_Type.ASSOCIATIVE_LEFT )//If '('
                 operators.push(input.get(i));
             else if(input.get(i).getType() == Token_Type.ASSOCIATIVE_RIGTH ){//If ')'
                 while(operators.peek().getType() != Token_Type.ASSOCIATIVE_LEFT)
-                    output.push(operators.pop());
+                    output.add(operators.pop());
                 operators.pop();
             }
             else if(input.get(i).isOperator()){//If it is an operator
                 if(input.get(i).leftAssociative())
                     while( !operators.isEmpty() && operators.peek().precedence() >= input.get(i).precedence() )
-                        output.push(operators.pop());
+                        output.add(operators.pop());
                 else if(input.get(i).rigthAssociative())
                     while( !operators.isEmpty() && operators.peek().precedence() > input.get(i).precedence() )
-                        output.push(operators.pop());
+                        output.add(operators.pop());
                 operators.push(input.get(i));
             }
         }
         while(!operators.isEmpty())//While the stack has operator push them to the output
-            output.push(operators.pop());
+            output.add(operators.pop());
         return output;
     }
 
@@ -130,8 +139,23 @@ public class Calculator{
      * @param in
      * @return ExpressionTree
      */
-    public ExpressionTree<Token> toTree(Stack<Token> RPN){
-        
+    public Token eval(Queue<Token> RPN){
+        ExpressionTree<Token> tree = new ExpressionTree<Token>();
+        Stack<ExpressionTree<Token>> st = new Stack<>();
+        Stack<Token> result = new Stack<>();
+        while(!RPN.isEmpty()){
+            if(RPN.peek().isOperand())
+                result.push(RPN.remove());
+            else if(RPN.peek().isOperator())
+                if(RPN.peek().isBinary()){
+                    Token B = result.pop();
+                    Token A = result.pop();
+                    result.push( this.evaluate(A, B, RPN.remove()) );
+                }
+                else if(RPN.peek().isUnary())
+                    result.push( this.evaluate(result.pop(), null, RPN.remove()) );
+        }
+        return result.pop();//Last element aka Result
     }
 
     /**

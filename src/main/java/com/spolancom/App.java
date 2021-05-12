@@ -18,9 +18,9 @@ public class App
   //     String s = "3x + sen(2x) - x^2 + sqrt(4)";
         Calculator c = new Calculator();
         ArrayList<Token> t = c.Tokenizer(s);
-        System.out.println(t.toString());
-        Scanner x = new Scanner(System.in);
-        t = c.instantiateVariables(t, x);
-        System.out.println(c.toRPN(t));
+        //System.out.println(t.toString());
+        //Scanner x = new Scanner(System.in);
+        //t = c.instantiateVariables(t, x);
+        System.out.println(c.eval(c.toRPN(t)).getNumber());
     }
 }

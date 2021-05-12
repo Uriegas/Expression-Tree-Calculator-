@@ -97,9 +97,17 @@ public class Calculator{
                 while(operators.peek().getType() != Token_Type.ASSOCIATIVE_LEFT)
                     output.add(operators.pop());
                 operators.pop();
+                if(operators.peek().isFunction())
+                    output.add(operators.pop());
             }
+            else if(input.get(i).isFunction())//If it is a function
+                operators.add(input.get(i));
             else if(input.get(i).isOperator()){//If it is an operator
-                if(input.get(i).leftAssociative())
+                if(input.get(i).getType() == Token_Type.SUB && input.get(i-1).isOperator()){
+                    operators.push(input.get(i));
+                    continue;
+                }
+                else if(input.get(i).leftAssociative())
                     while( !operators.isEmpty() && operators.peek().precedence() >= input.get(i).precedence() )
                         output.add(operators.pop());
                 else if(input.get(i).rigthAssociative())
@@ -128,7 +136,8 @@ public class Calculator{
      * @param s
      * @return Array with instantiated variables
      */
-    public ArrayList<Token> instantiateVariables(ArrayList<Token> t, Scanner s){
+    public ArrayList<Token> instantiateVariables(ArrayList<Token> t){
+        Scanner s = new Scanner(System.in);
         for(int i = 0; i < t.size(); i++){
             if(t.get(i).getType() == Token_Type.VARIABLE){
                 System.out.print(String.format("Introduzca el valor de %s: ",t.get(i).getValue()));
@@ -140,6 +149,7 @@ public class Calculator{
                 break;//Remove break and we can implement multiple variables(ex. x, y, z)
             } 
         }
+        s.close();
         return t;
     }
 
@@ -153,7 +163,7 @@ public class Calculator{
         while(!RPN.isEmpty()){
             if(RPN.peek().isOperand())
                 result.push(RPN.remove());
-            else if(RPN.peek().isOperator())
+            else if(RPN.peek().isOperator() || RPN.peek().isFunction())
                 if(RPN.peek().isBinary()){
                     Token B = result.pop();
                     Token A = result.pop();
@@ -163,6 +173,11 @@ public class Calculator{
                     result.push( this.evaluate(result.pop(), null, RPN.remove()) );
         }
         return result.pop();//Last element aka Result
+    }
+
+    public double compute(String s) throws IOException{
+        tree = toTree( toRPN( instantiateVariables( Tokenizer(s) ) ) );
+        return tree.compute();
     }
 
     /**
@@ -179,8 +194,7 @@ public class Calculator{
         input = s.nextLine();
         while(!input.equals("!exit")){
             try{
-                tree = toTree( toRPN( instantiateVariables( Tokenizer(input), s ) ) );
-                System.out.println(tree.compute());
+                System.out.println(compute(input));
             }
             catch(Exception e){
                 System.out.println("Syntax error");

@@ -60,13 +60,19 @@ public class Token {
     public boolean isOperator(){
         if( this.type == Token_Type.ADD || this.type == Token_Type.SUB ||
             this.type == Token_Type.MUL || this.type == Token_Type.DIV ||
-            this.type == Token_Type.POW || this.type == Token_Type.SIN ||
-            this.type == Token_Type.COS || this.type == Token_Type.TAN )
+            this.type == Token_Type.POW )
             return true;
         else
             return false;
     }
 
+    public boolean isFunction(){
+        if( this.type == Token_Type.SIN || this.type == Token_Type.COS ||
+            this.type == Token_Type.TAN || this.type == Token_Type.SQRT )
+            return true;
+        else
+            return false;
+    }
     public boolean isBinary(){
         if( this.type == Token_Type.ADD || this.type == Token_Type.SUB ||
             this.type == Token_Type.MUL || this.type == Token_Type.DIV ||
@@ -77,7 +83,7 @@ public class Token {
     }
 
     public boolean isUnary(){
-        if( this.type == Token_Type.SIN ||
+        if( this.type == Token_Type.SIN || this.type == Token_Type.SQRT ||
             this.type == Token_Type.COS || this.type == Token_Type.TAN )
             return true;
         else
@@ -85,11 +91,11 @@ public class Token {
     }
 
     public int precedence(){
-        if(type == Token_Type.MUL || type == Token_Type.DIV)
+        if(type == Token_Type.POW)
             return 3;
-        else if(type == Token_Type.ADD || type == Token_Type.SUB)
+        else if(type == Token_Type.MUL || type == Token_Type.DIV)
             return 2;
-        else if(type == Token_Type.POW)//Binary operators
+        else if(type == Token_Type.ADD || type == Token_Type.SUB)
             return 1;
         else //Unary operators
             return 0;

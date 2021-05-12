@@ -36,7 +36,8 @@ public class ExpressionTree {
         else if(n.isBinary()){
             Node tmp = new Node(n);
             tmp.setLeft(tree.pop());
-            tmp.setRight(tree.pop());
+            try{tmp.setRight(tree.pop());}
+            catch(Exception e){tmp.setRight(null);}
             tree.push(tmp);
         }
         else if(n.isUnary()){
@@ -89,14 +90,14 @@ public class ExpressionTree {
     public Double eval(double a, double b, Token operation){
         switch (operation.getType()) {
             case ADD: return ( a + b );
-            case SUB: return ( a - b );
+            case SUB: return ( b - a );
             case MUL: return ( a * b );
             case DIV: return ( a / b );
             case POW: return ( Math.pow(a, b) );
-            case SQRT: return ( Math.sqrt(a) );
-            case SIN: return ( Math.sin(a) );
-            case COS: return ( Math.cos(a) );
-            case TAN: return ( Math.tan(a) );
+            case SQRT: return ( Math.sqrt(b) );
+            case SIN: return ( Math.sin(b) );
+            case COS: return ( Math.cos(b) );
+            case TAN: return ( Math.tan(b) );
             default: return null;
         }
     }

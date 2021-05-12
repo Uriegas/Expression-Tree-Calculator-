@@ -15,16 +15,16 @@ public class Calculator{
     /**
      * User input
      */
-    private String in;
+    private String input;
     /**
      * Expression Tree to store the user input abstractely
      * It is useful for making notation convertions and evaluation
      */
-    private ExpressionTree<Token> tree = new ExpressionTree<Token>();
+    private ExpressionTree tree = new ExpressionTree();
     private Token result;
 
     public Calculator(){
-        in = null;
+        input = "";
         tree = null;
         result = null;
     }
@@ -140,8 +140,6 @@ public class Calculator{
      * @return ExpressionTree
      */
     public Token eval(Queue<Token> RPN){
-        ExpressionTree<Token> tree = new ExpressionTree<Token>();
-        Stack<ExpressionTree<Token>> st = new Stack<>();
         Stack<Token> result = new Stack<>();
         while(!RPN.isEmpty()){
             if(RPN.peek().isOperand())
@@ -165,12 +163,23 @@ public class Calculator{
     public int run(){
         Scanner s = new Scanner(System.in);
         System.out.println("Scientific Calculator");
-        System.out.println("Enter something to compute");
+
         System.out.print("> ");
         //Save user input to in
-        in = s.nextLine();
-        this.compute();
+        input = s.nextLine();
+        while(!input.equals("!exit")){
+            try{
+                System.out.println( eval( toRPN( Tokenizer(input) ) ) );
+                System.out.print("> ");
 
+                //Save user input to in
+                input = s.nextLine();
+            }
+            catch(Exception e){
+                System.out.println("Syntax error");
+            }
+        }
+        s.close();
         return 0;
     }
 }

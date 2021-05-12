@@ -122,10 +122,10 @@ public class Calculator{
     public ArrayList<Token> instantiateVariables(ArrayList<Token> t, Scanner s){
         for(int i = 0; i < t.size(); i++){
             if(t.get(i).getType() == Token_Type.VARIABLE){
-                System.out.print("Introduzca el valor de : ");
+                System.out.print(String.format("Introduzca el valor de %s: ",t.get(i).getValue()));
                 Token tmp = new Token(s.nextDouble());
                 for(int j = i; j < t.size(); j++){
-                    if(t.get(j).equals(tmp))
+                    if(t.get(j).equals(t.get(i)))
                         t.set(j, tmp);
                 }
                 break;//Remove break and we can implement multiple variables(ex. x, y, z)
@@ -157,6 +157,7 @@ public class Calculator{
     }
 
     /**
+     * Run function.
      * Just runs the calculator
      * @return Exit state
      */
@@ -169,7 +170,7 @@ public class Calculator{
         input = s.nextLine();
         while(!input.equals("!exit")){
             try{
-                System.out.println( eval( toRPN( Tokenizer(input) ) ) );
+                System.out.println( eval( toRPN( instantiateVariables( Tokenizer(input), s ) ) ) );
                 System.out.print("> ");
 
                 //Save user input to in

@@ -43,6 +43,10 @@ public class Token {
             return null;
     }
 
+    public String getValue(){
+        return value;
+    }
+
     public Token_Type getType(){return type;}
 
     public boolean isOperand(){

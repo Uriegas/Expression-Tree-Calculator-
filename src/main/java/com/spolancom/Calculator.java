@@ -114,6 +114,15 @@ public class Calculator{
     }
 
     /**
+     * toTree method
+     * @param t
+     * @param s
+     * @return
+     */
+    public ExpressionTree toTree(Queue<Token> RPN){
+        return new ExpressionTree(RPN);
+    }
+    /**
      * Defines variables into numbers(double)
      * @param t
      * @param s
@@ -170,15 +179,16 @@ public class Calculator{
         input = s.nextLine();
         while(!input.equals("!exit")){
             try{
-                System.out.println( eval( toRPN( instantiateVariables( Tokenizer(input), s ) ) ) );
-                System.out.print("> ");
-
-                //Save user input to in
-                input = s.nextLine();
+                tree = toTree( toRPN( instantiateVariables( Tokenizer(input), s ) ) );
+                System.out.println(tree.compute());
             }
             catch(Exception e){
                 System.out.println("Syntax error");
             }
+                System.out.print("> ");
+
+                //Save user input to in
+                input = s.nextLine();
         }
         s.close();
         return 0;

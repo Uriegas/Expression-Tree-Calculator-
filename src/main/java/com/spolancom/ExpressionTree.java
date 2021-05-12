@@ -1,29 +1,48 @@
 package com.spolancom;
 
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * Expression Tree
  * 
  */
 public class ExpressionTree {
-    enum Pos {
-        LEFT, RIGHT
-    }
-    private Node<Token> root;
+
+    private Node root;
 
     public ExpressionTree() {
         root = null;
     }
 
-    public ExpressionTree(Token init_val) {
-        root = new Node<Token>(init_val);
+    public ExpressionTree(Node t) {
+        root = t;
     }
 
-    public Node<Token> Add(Node<Token> n) {
-        if (n == null)
-            root = n;
-        else{
-            
+    public ExpressionTree(Queue<Token> RPN){
+        root = RPNtoTree(RPN);
+    }
+
+    public Node RPNtoTree(Queue<Token> RPN){
+        Stack<Node> tree = new Stack<>();
+        for(Token t : RPN)//Iterate over RPN
+            Add(t, tree);
+        return tree.pop();
+    }
+
+    public void Add(Token n, Stack<Node> tree){
+        if (n.isOperand())
+            tree.push(new Node(n));
+        else if(n.isBinary()){
+            Node tmp = new Node(n);
+            tmp.setLeft(tree.pop());
+            tmp.setRight(tree.pop());
+            tree.push(tmp);
+        }
+        else if(n.isUnary()){
+            Node tmp = new Node(n);
+            tmp.setRight(tree.pop());
+            tree.push(tmp);
         }
     }
 
@@ -48,29 +67,37 @@ public class ExpressionTree {
         return tree;
     }
 */
-    public double evaluate(Node<Token> root){
+    /**
+     * Compute tree
+     * @return
+     */
+    public double compute(){
+        return evaluate(root);
+    }
+    public double evaluate(Node root){
         if(root == null)
             return (double)0.0;
-        else if ( (root.getLeftNode() == null) && (root.getRigthNode() == null) )
+        else if ( (root.visitLeft() == null) && (root.visitRigth() == null) )
             return root.getData().getNumber();
-        double left = evaluate(root.getLeftNode());
-        double rigth = evaluate(root.getRigthNode());
+        double left = evaluate(root.visitLeft());
+        double rigth = evaluate(root.visitRigth());
 
         return eval(left, rigth, root.getData());
 
     }
 
-    public double eval(Token a, Token b, Token operation){
+    public Double eval(double a, double b, Token operation){
         switch (operation.getType()) {
-            case ADD: return ( a.getNumber() + b.getNumber() );
-            case SUB: return ( a.getNumber() - b.getNumber() );
-            case MUL: return ( a.getNumber() * b.getNumber() );
-            case DIV: return ( a.getNumber() / b.getNumber() );
-            case POW: return ( Math.pow(a.getNumber(), b.getNumber()) );
-            case SQRT: return ( Math.sqrt(a.getNumber()) );
-            case SIN: return ( Math.sin(a.getNumber()) );
-            case COS: return ( Math.cos(a.getNumber()) );
-            case TAN: return ( Math.tan(a.getNumber()) );
+            case ADD: return ( a + b );
+            case SUB: return ( a - b );
+            case MUL: return ( a * b );
+            case DIV: return ( a / b );
+            case POW: return ( Math.pow(a, b) );
+            case SQRT: return ( Math.sqrt(a) );
+            case SIN: return ( Math.sin(a) );
+            case COS: return ( Math.cos(a) );
+            case TAN: return ( Math.tan(a) );
+            default: return null;
         }
     }
 }

@@ -23,12 +23,21 @@ public class Calculator{
     private ExpressionTree tree = new ExpressionTree();
     private Token result;
 
+    /**
+     * Dummy constructor
+     */
     public Calculator(){
         input = "";
         tree = null;
         result = null;
     }
-
+    /**
+     * Usage for Shunting Yard algorithm used for comparation with binary tree.
+     * @param a number 1
+     * @param b number 2
+     * @param operation
+     * @return Token representing the result of the operation
+     */
     public Token evaluate(Token a, Token b, Token operation){
         switch (operation.getType()) {
             case ADD: return new Token( a.getNumber() + b.getNumber() );
@@ -43,10 +52,9 @@ public class Calculator{
             default: return new Token("ERROR"); //Return token error
         }
     }
-    public Token compute(){return result;}
     /**
-     * Tokenizer
-     * @param s
+     * Tokenizer, takes a string and divides it into tokens
+     * @param s representing string to evaluate
      * @return Array of tokens
      */
     public ArrayList<Token> Tokenizer(String s) throws IOException{
@@ -75,14 +83,9 @@ public class Calculator{
     /**
      * toRPN function
      * Converts an array of tokens to a stack in Reverse Polish Notation
-     * This implements the Shunting Yard algorithm
+     * This function implements the Shunting Yard algorithm
      * @param ArrayList<Token> array of tokens
-     * @return Stack<Token> RPN
-     * Note: Doenst support syntax error detection yet
-     * Note: Minus operator could be unary and binary
-     * Note: Need to implement a function that inputs an element to an array
-     * and pushes the rest of the elements to the rigth.
-     * This for the implicit multiplication and unary substraction
+     * @return Queue of tokens in RPN notation
      */
     public Queue<Token> toRPN(ArrayList<Token> input){
         Stack<Token> operators = new Stack<Token>();
@@ -122,19 +125,18 @@ public class Calculator{
     }
 
     /**
-     * toTree method
-     * @param t
-     * @param s
-     * @return
+     * Converts a array in RPN notation to an expression tree
+     * @param RPN notation array
+     * @return ExpressionTree
      */
     public ExpressionTree toTree(Queue<Token> RPN){
         return new ExpressionTree(RPN);
     }
     /**
      * Defines variables into numbers(double)
-     * @param t
-     * @param s
-     * @return Array with instantiated variables
+     * In this case just of one variable aka 'x'
+     * @param t array of tokens
+     * @return array with instantiated variables
      */
     public ArrayList<Token> instantiateVariables(ArrayList<Token> t){
         Scanner s = new Scanner(System.in);
@@ -151,11 +153,12 @@ public class Calculator{
         }
         return t;
     }
-
     /**
-     * Function to convert an RPN stack onto an expression tree
-     * @param in
-     * @return ExpressionTree
+     * Function to evaluate the RPN expression
+     * using the shunting yard algorithm.
+     * Thanks Edsger Dijkstra
+     * @param RPN queue of tokens
+     * @return Token representing the result
      */
     public Token eval(Queue<Token> RPN){
         Stack<Token> result = new Stack<>();
@@ -173,12 +176,16 @@ public class Calculator{
         }
         return result.pop();//Last element aka Result
     }
-
+    /**
+     * Using all the functions, evaluates from String to result of expression
+     * @param s the string
+     * @throws IOException
+     * @return double result
+     */
     public double compute(String s) throws IOException{
         tree = toTree( toRPN( instantiateVariables( Tokenizer(s) ) ) );
         return tree.compute();
     }
-
     /**
      * Run function.
      * Just runs the calculator

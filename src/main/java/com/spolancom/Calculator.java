@@ -141,7 +141,7 @@ public class Calculator{
         for(int i = 0; i < t.size(); i++){
             if(t.get(i).getType() == Token_Type.VARIABLE){
                 System.out.print(String.format("Introduzca el valor de %s: ",t.get(i).getValue()));
-                Token tmp = new Token(s.nextDouble());
+                Token tmp = new Token(Double.parseDouble(s.nextLine()));
                 for(int j = i; j < t.size(); j++){
                     if(t.get(j).equals(t.get(i)))
                         t.set(j, tmp);
@@ -149,7 +149,6 @@ public class Calculator{
                 break;//Remove break and we can implement multiple variables(ex. x, y, z)
             } 
         }
-        s.close();
         return t;
     }
 
@@ -199,10 +198,9 @@ public class Calculator{
             catch(Exception e){
                 System.out.println("Syntax error");
             }
-                System.out.print("> ");
-
-                //Save user input to in
-                input = s.nextLine();
+            System.out.print("> ");
+            //Save user input to in
+            input = s.nextLine();
         }
         s.close();
         return 0;

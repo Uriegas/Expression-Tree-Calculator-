@@ -76,4 +76,4 @@ De igual manera se deberá tener lo siguiente:
   3. Se deberá generar un reporte de actividades en formato PDF => **Se subirá a plataforma google classroom**
 
 ### Reporte:
-[Overleaf](https://www.overleaf.com/read/nhmkggjbfzmp)
+[Overleaf](https://www.overleaf.com/read/bkyqpnpdyxjn)
